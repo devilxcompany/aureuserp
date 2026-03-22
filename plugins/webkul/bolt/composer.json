@@ -1,0 +1,30 @@
+{
+    "name": "webkul/bolt",
+    "description": "Bolt CMS content management module for AureusERP",
+    "authors": [
+        {
+            "name": "Aureus ERP",
+            "email": "support@aureuserp.in"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\Bolt\\BoltServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Webkul\\Bolt\\": "src/",
+            "Webkul\\Bolt\\Database\\Factories\\": "database/factories/",
+            "Webkul\\Bolt\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Webkul\\Bolt\\Tests\\": "tests/"
+        }
+    }
+}
