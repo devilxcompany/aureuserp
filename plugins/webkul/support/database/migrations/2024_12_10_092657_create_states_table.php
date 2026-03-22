@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -33,10 +34,16 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
+
         Schema::table('states', function (Blueprint $table) {
-            $table->dropForeign(['country_id']);
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign(['country_id']);
+            }
         });
 
         Schema::dropIfExists('states');
+
+        Schema::enableForeignKeyConstraints();
     }
 };
