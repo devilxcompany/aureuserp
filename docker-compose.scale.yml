@@ -1,0 +1,27 @@
+version: '3.9'
+
+# ============================================================
+# AureusERP - Scale Configuration (Load Balancer + Multiple App Instances)
+# Usage: docker compose -f docker-compose.yml -f docker-compose.scale.yml up -d --scale app=3
+# ============================================================
+
+services:
+  app:
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  nginx:
+    volumes:
+      - ./nginx/conf.d/load-balancer.conf:/etc/nginx/conf.d/load-balancer.conf:ro
+
+  queue:
+    deploy:
+      replicas: 2

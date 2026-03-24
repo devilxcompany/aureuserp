@@ -14,3 +14,23 @@ storage/logs/*.log
 Thumbs.db
 .idea/
 *.sublime-*
+
+# SSL certificates (never commit real certs)
+nginx/ssl/*.pem
+nginx/ssl/*.key
+nginx/ssl/*.crt
+nginx/ssl/dhparam.pem
+
+# Database backups
+/var/backups/
+
+# Docker build artifacts
+.docker-compose.override.yml
+
+# PHPUnit
+.phpunit.result.cache
+phpunit.xml
+
+# Coverage reports
+coverage.xml
+coverage/

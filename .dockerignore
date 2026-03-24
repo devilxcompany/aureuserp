@@ -1,0 +1,60 @@
+# ============================================================
+# AureusERP .dockerignore
+# ============================================================
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Docker files themselves (no recursion)
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Dependencies (will be rebuilt in Docker)
+vendor/
+node_modules/
+
+# Development environment
+.env
+.env.local
+.env.development
+
+# Runtime/storage (use volumes instead)
+storage/logs/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+bootstrap/cache/
+
+# Tests
+tests/
+phpunit.xml
+phpunit.xml.dist
+.phpunit.result.cache
+
+# Build artifacts
+public/hot
+public/build/
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-*
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+docs/
+DEPLOYMENT.md
+
+# CI/CD
+.github/
+
+# Scripts (optional - comment out if you want them in the image)
+# scripts/
