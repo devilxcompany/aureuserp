@@ -1,0 +1,15 @@
+# SSL certificates are stored here but NOT committed to git.
+#
+# For production, run:
+#   bash scripts/setup-ssl.sh --domain=yourdomain.com --email=admin@yourdomain.com
+#
+# For development (self-signed):
+#   openssl req -x509 -nodes -newkey rsa:4096 \
+#     -keyout privkey.pem -out fullchain.pem -days 365 \
+#     -subj "/CN=localhost"
+#   openssl dhparam -out dhparam.pem 2048
+#
+# Required files:
+#   fullchain.pem   - SSL certificate chain
+#   privkey.pem     - Private key
+#   dhparam.pem     - Diffie-Hellman parameters

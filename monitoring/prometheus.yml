@@ -1,0 +1,49 @@
+# ============================================================
+# Prometheus Configuration for AureusERP
+# ============================================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+rule_files: []
+
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # AureusERP application health
+  - job_name: 'aureuserp'
+    metrics_path: '/health'
+    static_configs:
+      - targets: ['nginx:80']
+    relabel_configs:
+      - target_label: app
+        replacement: aureuserp
+
+  # Node exporter (server metrics)
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # MySQL metrics
+  - job_name: 'mysql'
+    static_configs:
+      - targets: ['mysql-exporter:9104']
+
+  # Redis metrics
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+
+  # Nginx metrics (if nginx-prometheus-exporter is running)
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx:9113']
