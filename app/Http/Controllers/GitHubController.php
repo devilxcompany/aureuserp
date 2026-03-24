@@ -484,11 +484,18 @@ class GitHubController extends Controller
     // -------------------------------------------------------------------------
 
     /**
-     * Return the active GitHub integration or a 401 JSON response.
+     * Return the active GitHub integration for the authenticated user,
+     * or a 401 JSON response if none is found.
      */
     private function getActiveIntegration(Request $request): GitHubIntegration|JsonResponse
     {
-        $integration = GitHubIntegration::where('is_active', true)->latest()->first();
+        $query = GitHubIntegration::where('is_active', true);
+
+        if ($request->user()) {
+            $query->where('user_id', $request->user()->id);
+        }
+
+        $integration = $query->latest()->first();
 
         if (! $integration) {
             return response()->json([
