@@ -49,31 +49,20 @@ class PageResource extends Resource
                             ])->columns(2),
                         Forms\Components\Tabs\Tab::make('SEO')
                             ->schema([
-                                Forms\Components\TextInput::make('meta_title')
-                                    ->maxLength(255)
-                                    ->label('Meta Title'),
-                                Forms\Components\Textarea::make('meta_description')
+                                Forms\Components\TextInput::make('meta_description')
                                     ->maxLength(500)
                                     ->label('Meta Description'),
-                                Forms\Components\KeyValue::make('seo_settings')
-                                    ->label('Additional SEO Settings'),
+                                Forms\Components\TextInput::make('meta_keywords')
+                                    ->maxLength(255)
+                                    ->label('Meta Keywords'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Settings')
                             ->schema([
-                                Forms\Components\Select::make('status')
-                                    ->options([
-                                        'draft' => 'Draft',
-                                        'published' => 'Published',
-                                    ])
-                                    ->required()
-                                    ->default('draft'),
+                                Forms\Components\Toggle::make('is_published')
+                                    ->label('Published')
+                                    ->default(false),
                                 Forms\Components\DateTimePicker::make('published_at')
                                     ->label('Published At'),
-                                Forms\Components\Select::make('author_id')
-                                    ->relationship('author', 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->label('Author'),
                             ]),
                     ])->columnSpanFull(),
             ]);
@@ -88,27 +77,20 @@ class PageResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
-                Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'warning' => 'draft',
-                        'success' => 'published',
-                    ]),
+                Tables\Columns\IconColumn::make('is_published')
+                    ->boolean()
+                    ->label('Published'),
                 Tables\Columns\TextColumn::make('published_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('author.name')
-                    ->label('Author'),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'draft' => 'Draft',
-                        'published' => 'Published',
-                    ]),
+                Tables\Filters\TernaryFilter::make('is_published')
+                    ->label('Published'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -129,9 +111,9 @@ class PageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPages::route('/'),
+            'index'  => Pages\ListPages::route('/'),
             'create' => Pages\CreatePage::route('/create'),
-            'edit' => Pages\EditPage::route('/{record}/edit'),
+            'edit'   => Pages\EditPage::route('/{record}/edit'),
         ];
     }
 }
