@@ -25,11 +25,15 @@ Route::middleware([HandleDeveloperCors::class, CheckMaintenanceMode::class])->gr
     Route::post('/login', [LoginController::class, 'login']);
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    // StackBlitz Bolt integration routes
+    // StackBlitz Bolt AI integration
     Route::prefix('bolt')->group(function () {
-        Route::get('/status', [BoltController::class, 'status'])->name('bolt.status');
-        Route::get('/launch', [BoltController::class, 'launch'])->name('bolt.launch');
-        Route::get('/embed', [BoltController::class, 'embed'])->name('bolt.embed');
+        Route::get('/status',  [BoltController::class, 'status'])->name('bolt.status');
+        Route::get('/launch',  [BoltController::class, 'launch'])->name('bolt.launch');
+        Route::get('/embed',   [BoltController::class, 'embed'])->name('bolt.embed');
+        Route::get('/prompt',  [BoltController::class, 'prompt'])->name('bolt.prompt');
+        Route::get('/import',  [BoltController::class, 'import'])->name('bolt.import');
+        // Webhook endpoint: excluded from CSRF verification by design (raw POST from Bolt.new)
+        Route::post('/webhook', [BoltController::class, 'webhook'])->name('bolt.webhook')->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
     });
 
     // Developer settings routes (requires authentication)
