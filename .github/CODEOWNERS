@@ -1,0 +1,5 @@
+# CODEOWNERS - Require review from code owners on all pull requests.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global rule: all changes require review from the repository owner
+* @devilxcompany
