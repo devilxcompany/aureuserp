@@ -9,6 +9,10 @@
 # Laravel Logs
 storage/logs/*.log
 
+# Netlify
+.netlify/
+netlify-deploy/
+
 # Other exclusions
 .DS_Store
 Thumbs.db
