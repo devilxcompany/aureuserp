@@ -74,7 +74,7 @@ class ListPlugins extends ListRecords
             $github = new GitHub;
 
             $latestVersion = $github->latestVersion(
-                config('services.github.owner', 'aureuserp'),
+                config('services.github.owner', 'devilxcompany'),
                 config('services.github.repo', 'aureuserp'),
             );
 

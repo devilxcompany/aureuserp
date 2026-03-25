@@ -37,7 +37,7 @@ return [
 
     'github' => [
         'token' => env('GITHUB_TOKEN'),
-        'owner' => env('GITHUB_OWNER', 'aureuserp'),
+        'owner' => env('GITHUB_OWNER', 'devilxcompany'),
         'repo'  => env('GITHUB_REPO', 'aureuserp'),
     ],
 
