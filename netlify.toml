@@ -14,24 +14,33 @@
   to     = "/index.html"
   status = 200
 
-# API calls are proxied to the Laravel backend (configure BACKEND_URL in Netlify env vars)
+# API calls are proxied to the Laravel backend.
+# Replace the `to` URL with your actual Laravel backend URL, or set it via
+# Netlify's Edge Functions / environment substitution if your plan supports it.
 [[redirects]]
   from   = "/api/*"
-  to     = "{{BACKEND_URL}}/api/:splat"
+  to     = "https://your-laravel-backend.example.com/api/:splat"
   status = 200
   force  = true
 
 [[redirects]]
   from   = "/login"
-  to     = "{{BACKEND_URL}}/login"
+  to     = "https://your-laravel-backend.example.com/login"
   status = 200
   force  = true
 
 [[redirects]]
   from   = "/dashboard"
-  to     = "{{BACKEND_URL}}/dashboard"
+  to     = "https://your-laravel-backend.example.com/dashboard"
   status = 200
   force  = true
+
+# SPA fallback – any unmatched path serves index.html with a 200 so the
+# client-side app can handle routing.
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
 
 # Security headers
 [[headers]]
@@ -41,3 +50,9 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy        = "strict-origin-when-cross-origin"
     Permissions-Policy     = "camera=(), microphone=(), geolocation=()"
+
+# Cache static assets aggressively
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
