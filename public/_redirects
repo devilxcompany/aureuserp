@@ -1,0 +1,5 @@
+# Netlify _redirects file (alternative to netlify.toml redirects)
+# This file is kept for compatibility; netlify.toml takes precedence.
+
+# Serve the login page at the root
+/       /index.html   200

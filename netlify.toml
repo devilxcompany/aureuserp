@@ -1,0 +1,43 @@
+[build]
+  # Directory to publish (the public/ folder is served by Netlify)
+  publish = "public"
+
+  # No build command needed for a static site
+  command = ""
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Redirect all requests to index.html so the login page is the entry point
+[[redirects]]
+  from   = "/"
+  to     = "/index.html"
+  status = 200
+
+# API calls are proxied to the Laravel backend (configure BACKEND_URL in Netlify env vars)
+[[redirects]]
+  from   = "/api/*"
+  to     = "{{BACKEND_URL}}/api/:splat"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from   = "/login"
+  to     = "{{BACKEND_URL}}/login"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from   = "/dashboard"
+  to     = "{{BACKEND_URL}}/dashboard"
+  status = 200
+  force  = true
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options        = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"
+    Permissions-Policy     = "camera=(), microphone=(), geolocation=()"
