@@ -2,6 +2,7 @@
 
 namespace Webkul\PluginManager\Filament\Resources\PluginResource\Pages;
 
+use App\Services\GitHub;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
@@ -70,13 +71,24 @@ class ListPlugins extends ListRecords
     protected function syncPlugins(): void
     {
         try {
+            $github = new GitHub;
+
+            $latestVersion = $github->latestVersion(
+                config('services.github.owner', 'aureuserp'),
+                config('services.github.repo', 'aureuserp'),
+            );
+
             $synced = collect(Plugin::getAllPluginPackages())
-                ->filter(function ($package, $name) {
+                ->filter(function ($package, $name) use ($latestVersion) {
                     $composerPath = $package->basePath('composer.json');
 
                     $composer = file_exists($composerPath)
                         ? json_decode(file_get_contents($composerPath), true) ?? []
                         : [];
+
+                    $resolvedVersion = data_get($composer, 'version')
+                        ?? $latestVersion
+                        ?? '1.0.0';
 
                     $plugin = Plugin::updateOrCreate(
                         ['name' => $name],
@@ -84,7 +96,7 @@ class ListPlugins extends ListRecords
                             'author'         => data_get($composer, 'authors.0.name', 'Webkul'),
                             'summary'        => data_get($composer, 'description', $package->description ?? ''),
                             'description'    => data_get($composer, 'description', $package->description ?? ''),
-                            'latest_version' => data_get($composer, 'version', '1.0.0'),
+                            'latest_version' => $resolvedVersion,
                             'license'        => data_get($composer, 'license', 'MIT'),
                         ]
                     );

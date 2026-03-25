@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'github' => [
+        'token' => env('GITHUB_TOKEN'),
+        'owner' => env('GITHUB_OWNER', 'aureuserp'),
+        'repo'  => env('GITHUB_REPO', 'aureuserp'),
+    ],
+
 ];
